@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AzureRest/AzureRestApi.csproj" />
+  <Project Path="FoundryApp/FoundryApp.csproj" Id="c320d781-89b5-43e5-9092-5f904c5323d4" />
+</Solution>
