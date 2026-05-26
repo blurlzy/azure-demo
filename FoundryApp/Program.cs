@@ -15,22 +15,34 @@ string endpoint = SecretManager.GetSecret("FoundryProjectEndpointAu");
 // The AzureCliCredential will use your logged-in Azure CLI identity, make sure to run `az login` first
 AIProjectClient projectClient = new(endpoint: new Uri(endpoint), tokenProvider: new DefaultAzureCredential());
 
-// 
+// get the agent reference for the agent you want to interact with, you can find this information on your project page under the "Agents" tab
 AgentReference agentReference = new(name: agentName, version: agentVersion);
 // Get the client for interacting with agent responses
 ProjectResponsesClient responseClient = projectClient.ProjectOpenAIClient.GetProjectResponsesClientForAgent(agentReference);
 
 
-// Get the full response without streaming
-// GetResponse(responseClient, "could you pls write a C# function which compares 2 dates?");
+// Get user message from console input
+Console.ForegroundColor = ConsoleColor.Green;
+Console.Write("Message the agent >>>: ");
+string userMessage = Console.ReadLine() ?? string.Empty;
+
+if (string.IsNullOrWhiteSpace(userMessage))
+{
+     Console.Error.WriteLine("No message entered. Exiting.");
+     return;
+}
+
 
 // Stream the agent response
-await StreamAgentResponseAsync(responseClient, "could you pls write a C# function which compares 2 dates?");
+await StreamAgentResponseAsync(responseClient, userMessage);
 
+// Get the full response without streaming
+// GetResponse(responseClient, userMessage);
 
 // stream agent responses with usage and completion information
 async Task StreamAgentResponseAsync(ProjectResponsesClient client, string userMessage)
 {
+     Console.ForegroundColor = ConsoleColor.Gray;
      Console.WriteLine("Streaming agent response...\n");
 
 #pragma warning disable OPENAI001
@@ -49,7 +61,7 @@ async Task StreamAgentResponseAsync(ProjectResponsesClient client, string userMe
           if (update is StreamingResponseCompletedUpdate completed)
           {
                // can we add different color for the completion status?
-               Console.ForegroundColor = ConsoleColor.Green;
+               Console.ForegroundColor = ConsoleColor.Yellow;
 
                if (completed.Response.Usage is { } usage)
                {
@@ -72,12 +84,9 @@ async Task StreamAgentResponseAsync(ProjectResponsesClient client, string userMe
 void GetResponse(ProjectResponsesClient client, string userMessage)
 {
      Console.WriteLine("Getting agent response...\n");
-     // return response
-#pragma warning disable OPENAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-     ResponseResult response = client.CreateResponse(
-         "could you pls write a C# function which compares 2 dates?"
-     );
-#pragma warning restore OPENAI001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
+#pragma warning disable OPENAI001
+     ResponseResult response = client.CreateResponse(userMessage);
+#pragma warning restore OPENAI001
 
      Console.WriteLine(response.GetOutputText());
 }
