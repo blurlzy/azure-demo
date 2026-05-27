@@ -5,7 +5,7 @@ using Azure.Security.KeyVault.Secrets;
 internal static class SecretManager
 {
      // azure key vault name
-     private const string _kv = "kv-zongyi-shared";
+     private const string _kv = "kv-zl-shared";
 
      private static SecretClient Client { get; } = new SecretClient(
                     new Uri($"https://{_kv}.vault.azure.net/"),

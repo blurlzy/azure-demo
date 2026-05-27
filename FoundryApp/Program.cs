@@ -5,15 +5,23 @@ using Azure.Identity;
 using OpenAI.Responses;
 
 // agent name & version
-const string agentName = "ZL-Demo";
-const string agentVersion = "6";
+const string agentName = "ms-fabric";
+const string agentVersion = "3";
 
 // retreive foundry project endpoint from key vault
 string endpoint = SecretManager.GetSecret("FoundryProjectEndpointAu");
 
-// Connect to your project using the endpoint from your project page
-// The AzureCliCredential will use your logged-in Azure CLI identity, make sure to run `az login` first
-AIProjectClient projectClient = new(endpoint: new Uri(endpoint), tokenProvider: new DefaultAzureCredential());
+// Connect using a service principal (app registration)
+string tenantId     = SecretManager.GetSecret("TenantId");
+string clientId     = SecretManager.GetSecret("FoundryProjClientId");
+string clientSecret = SecretManager.GetSecret("FoundryProjClientSecret");
+
+// "Service principal authentication isn't supported for the Fabric data agent."
+//var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+// interactive user login (OBO-compatible)
+var credential = new InteractiveBrowserCredential();
+
+AIProjectClient projectClient = new(endpoint: new Uri(endpoint), tokenProvider: credential);
 
 // get the agent reference for the agent you want to interact with, you can find this information on your project page under the "Agents" tab
 AgentReference agentReference = new(name: agentName, version: agentVersion);
