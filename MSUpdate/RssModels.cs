@@ -1,7 +1,4 @@
 ﻿
-using Microsoft.Identity.Client;
-using System.Text.Json.Serialization;
-
 namespace MSUpdate
 {
      // azure update rss item
@@ -35,16 +32,25 @@ namespace MSUpdate
          DateTimeOffset? PublishedAt,                  
          DateTimeOffset? CreatedAt);
 
-     // cosmos db item model
-     public sealed record UpdateItem(
-          [property: JsonPropertyName("id")] string Id,
-          // rss item id
-          string RssItemId,
-          string Source,
-          string Title,
-          string Link,
-          IReadOnlyList<string> Categories,
-          string Description,
-          DateTimeOffset? PublishedAt,
-          DateTimeOffset? UpdatedAt);
+     //public sealed record UpdateItem(
+     //     string Id,
+     //     // rss item id
+     //     string RssItemId,
+     //     string Source,
+     //     string Title,
+     //     string Link,
+     //     IReadOnlyList<string>? Categories,
+     //     string Description,
+     //     string? Creator,
+     //     DateTimeOffset? PublishedAt,
+     //     DateTimeOffset? UpdatedAt);
+
+     // create const ants for the sources
+     public static class UpdateSources
+     {
+          public const string Azure = "Azure";
+          public const string Foundry = "Microsoft Foundry";
+          public const string Fabric = "Microsoft Fabric";
+          public const string Github = "GitHub";
+     }
 }

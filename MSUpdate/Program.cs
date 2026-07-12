@@ -51,6 +51,7 @@ var fabricFullOutputPath = Path.GetFullPath(fabricOutputPath);
 Directory.CreateDirectory(Path.GetDirectoryName(fabricFullOutputPath)!);
 
 await using var fabricOutput = File.Create(fabricFullOutputPath);
+
 await JsonSerializer.SerializeAsync(
     fabricOutput,
     fabricUpdates,

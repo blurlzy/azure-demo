@@ -16,8 +16,7 @@ namespace MSUpdate
                _httpClient = httpClient;
           }
 
-          public async Task<IReadOnlyList<AzureUpdate>> GetUpdatesAsync(
-             CancellationToken cancellationToken = default)
+          public async Task<IReadOnlyList<AzureUpdate>> GetUpdatesAsync(CancellationToken cancellationToken = default)
           {
                using var response = await _httpClient.GetAsync(RssFeedUrl, cancellationToken);
                response.EnsureSuccessStatusCode();
@@ -65,8 +64,8 @@ namespace MSUpdate
                   ? date
                   : null;
 
-          private static bool? ParseBoolean(string? value) =>
-              bool.TryParse(value, out var result) ? result : null;
+          //private static bool? ParseBoolean(string? value) =>
+          //    bool.TryParse(value, out var result) ? result : null;
      }
 
 

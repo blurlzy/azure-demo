@@ -1,5 +1,10 @@
 <Solution>
-  <Project Path="AzureRest/AzureRestApi.csproj" />
-  <Project Path="FoundryApp/FoundryApp.csproj" Id="c320d781-89b5-43e5-9092-5f904c5323d4" />
-  <Project Path="MSUpdate/MSUpdate.csproj" Id="d270ab2f-9dd9-4630-b04d-95451c7f597f" />
+  <Folder Name="/Demo/">
+    <Project Path="AzureRest/AzureRestApi.csproj" />
+    <Project Path="FoundryApp/FoundryApp.csproj" Id="c320d781-89b5-43e5-9092-5f904c5323d4" />
+    <Project Path="MSUpdate/MSUpdate.csproj" Id="d270ab2f-9dd9-4630-b04d-95451c7f597f" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Demo.Tests/Demo.Tests.csproj" Id="426a6d9e-b101-4455-9662-2fd4e46ea2fe" />
+  </Folder>
 </Solution>
