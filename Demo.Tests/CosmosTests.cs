@@ -20,6 +20,10 @@ namespace Demo.Tests
           private readonly AzureUpdatesRssService _azureUpdatesRssService;
           // foundry updates rss services
           private readonly FoundryUpdatesRssService _foundryUpdateRssService;
+          // github updates rss services
+          private readonly GithubUpdatesRssService _githubUpdateRssService;
+          // fabric updates rss services
+          private readonly FabricUpdatesRssService _fabricUpdateRssService;
 
           // output
           private readonly ITestOutputHelper _output;
@@ -49,6 +53,8 @@ namespace Demo.Tests
 
                _azureUpdatesRssService = new AzureUpdatesRssService(_httpClient);
                _foundryUpdateRssService = new FoundryUpdatesRssService(_httpClient);
+               _githubUpdateRssService = new GithubUpdatesRssService(_httpClient);
+               _fabricUpdateRssService = new FabricUpdatesRssService(_httpClient);
           }
 
 
@@ -68,6 +74,30 @@ namespace Demo.Tests
 
                // save into cosmos db
                await _rssFeedCosmosDbService.SaveFoundryUpdatesAsync(foundryUpdates);
+          }
+
+          [Fact]
+          public async Task Save_Github_Updates_Test()
+          {
+               var githubUpdates = await _githubUpdateRssService.GetLatestAsync();
+
+               // save into cosmos db
+               await _rssFeedCosmosDbService.SaveGitHubUpdatesAsync(githubUpdates);
+
+               //foreach(var item in githubUpdates)
+               //{
+               //     _output.WriteLine($"Url: {item.Url.AbsoluteUri}, Title: {item.Title}, PublishedAt: {item.PublishedAt}");
+               //}
+          }
+
+          [Fact]
+          public async Task Save_Fabric_Updates_Test()
+          {
+               var fabricUpdates = await _fabricUpdateRssService.GetUpdatesAsync();
+               foreach (var item in fabricUpdates)
+               {
+                    _output.WriteLine($"Id: {item.Id}, Title: {item.Title}, Link: {item.Link}, PublishedAt: {item.PublishedAt}");
+               }    
           }
      }
 }

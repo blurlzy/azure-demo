@@ -32,7 +32,16 @@ namespace Func_Demo.Rss
          DateTimeOffset? PublishedAt,
          DateTimeOffset? CreatedAt);
 
-
+     // github rss item
+     public sealed record GitHubFeedItem
+     {
+          public required string Id { get; init; }
+          public required string Title { get; init; }
+          public string? Summary { get; init; }
+          public required Uri Url { get; init; }
+          public DateTimeOffset PublishedAt { get; init; }
+          public IReadOnlyCollection<string> Categories { get; init; } = [];
+     }
 
      // create const ants for the sources
      public static class UpdateSources
@@ -40,6 +49,6 @@ namespace Func_Demo.Rss
           public const string Azure = "Azure";
           public const string Foundry = "Microsoft Foundry";
           public const string Fabric = "Microsoft Fabric";
-          public const string Github = "GitHub";
+          public const string GitHub = "GitHub";
      }
 }

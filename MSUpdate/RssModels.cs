@@ -32,18 +32,21 @@ namespace MSUpdate
          DateTimeOffset? PublishedAt,                  
          DateTimeOffset? CreatedAt);
 
-     //public sealed record UpdateItem(
-     //     string Id,
-     //     // rss item id
-     //     string RssItemId,
-     //     string Source,
-     //     string Title,
-     //     string Link,
-     //     IReadOnlyList<string>? Categories,
-     //     string Description,
-     //     string? Creator,
-     //     DateTimeOffset? PublishedAt,
-     //     DateTimeOffset? UpdatedAt);
+     public sealed record GitHubFeedItem
+     {
+          public required string Id { get; init; }
+
+          public required string Title { get; init; }
+
+          public string? Summary { get; init; }
+
+          public required Uri Url { get; init; }
+
+          public DateTimeOffset PublishedAt { get; init; }
+
+          public IReadOnlyCollection<string> Categories { get; init; } = [];
+     }
+
 
      // create const ants for the sources
      public static class UpdateSources
@@ -51,6 +54,6 @@ namespace MSUpdate
           public const string Azure = "Azure";
           public const string Foundry = "Microsoft Foundry";
           public const string Fabric = "Microsoft Fabric";
-          public const string Github = "GitHub";
+          public const string GitHub = "GitHub";
      }
 }

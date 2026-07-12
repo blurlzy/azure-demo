@@ -1,6 +1,5 @@
 
 using System.Globalization;
-using System.Text.Json;
 using System.Xml.Linq;
 
 namespace MSUpdate;
@@ -20,7 +19,7 @@ public sealed class FabricUpdatesRssService
 
      public async Task<IReadOnlyList<FabricUpdate>> GetUpdatesAsync(CancellationToken cancellationToken = default)
      {
-          using var response = await _httpClient.GetAsync(RssFeedUrl, cancellationToken);
+          using var response = await _httpClient.GetAsync(RssFeedUrl, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
           response.EnsureSuccessStatusCode();
 
           await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
@@ -34,7 +33,7 @@ public sealed class FabricUpdatesRssService
               .Elements("item")
               .Select(MapItem)
               .ToArray()
-              ?? [];
+              ??  Array.Empty<FabricUpdate>(); ;
      }
 
 

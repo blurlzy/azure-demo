@@ -125,6 +125,41 @@ namespace Func_Demo.Persistence
                }
           }
 
-     }
+          // save github updates
+          public async Task SaveGitHubUpdatesAsync(IEnumerable<GitHubFeedItem> updates, CancellationToken cancellationToken = default)
+          {
+               // get min and max published date from the updates
+               var minPublishedDate = updates.Min(u => u.PublishedAt).AddDays(-1).ToUniversalTime();
+               var maxPublishedDate = updates.Max(m => m.PublishedAt).ToUniversalTime();
 
+               // load the existing updates from the db with date range
+               var existingUpdates = await GetItemsAsync(UpdateSources.GitHub, minPublishedDate, maxPublishedDate, cancellationToken);
+
+               foreach (var githubUpdate in updates)
+               {
+                    // check updated date, if its the same, skip it
+                    var existingUpdate = existingUpdates.FirstOrDefault(e => e.RssItemId == githubUpdate.Id);
+                    // check if it already exists by rss item id
+                    if (existingUpdate != null && existingUpdate.UpdatedAt == githubUpdate.PublishedAt)
+                    {
+                         continue;
+                    }
+                    // save the new update to the db
+                    var item = new CosmosItem(
+                          githubUpdate.Id,
+                          UpdateSources.GitHub,
+                          githubUpdate.Url.AbsoluteUri,
+                          githubUpdate.Title,
+                          githubUpdate.Summary ?? string.Empty,
+                          githubUpdate.Categories.ToArray(),
+                          string.Empty,
+                          githubUpdate.PublishedAt,
+                          githubUpdate.PublishedAt
+                    );
+
+                    // save into cosmos db
+                    await _container.CreateItemAsync(item, new PartitionKey(item.Partition));
+               }
+          }
+     }
 }
