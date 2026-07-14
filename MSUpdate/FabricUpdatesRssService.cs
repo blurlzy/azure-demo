@@ -6,7 +6,7 @@ namespace MSUpdate;
 
 public sealed class FabricUpdatesRssService
 {
-     private const string RssFeedUrl = "https://community.fabric.microsoft.com/oxcrx34285/rss/board?board.id=fbc_fabricupdatesblogs";
+     private const string RssFeedUrl = "https://community.fabric.microsoft.com/oxcrx34285/rss/board?board.id=fbc_pbiupdatesblog";
      private static readonly XNamespace DC = "http://purl.org/dc/elements/1.1/";
 
      private readonly HttpClient _httpClient;

@@ -5,8 +5,8 @@ using Azure.Identity;
 using OpenAI.Responses;
 
 // agent name & version
-const string agentName = "ms-fabric";
-const string agentVersion = "3";
+const string agentName = "ms-learn";
+const string agentVersion = "6";
 
 // retreive foundry project endpoint from key vault
 string endpoint = SecretManager.GetSecret("FoundryProjectEndpointAu");
@@ -17,9 +17,9 @@ string clientId     = SecretManager.GetSecret("FoundryProjClientId");
 string clientSecret = SecretManager.GetSecret("FoundryProjClientSecret");
 
 // "Service principal authentication isn't supported for the Fabric data agent."
-//var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
 // interactive user login (OBO-compatible)
-var credential = new InteractiveBrowserCredential();
+// var credential = new InteractiveBrowserCredential();
 
 AIProjectClient projectClient = new(endpoint: new Uri(endpoint), tokenProvider: credential);
 
@@ -31,7 +31,7 @@ ProjectResponsesClient responseClient = projectClient.ProjectOpenAIClient.GetPro
 
 // Get user message from console input
 Console.ForegroundColor = ConsoleColor.Green;
-Console.Write("Message the agent >>>: ");
+Console.Write($"Message the agent ({ agentName }) >>>: ");
 string userMessage = Console.ReadLine() ?? string.Empty;
 
 if (string.IsNullOrWhiteSpace(userMessage))
